@@ -24,65 +24,6 @@ export const categories = [
   "PC",
 ];
 
-const testObject = [
-  {
-    productName: "TV 14",
-    price: 174,
-    rating: 4.56,
-    discount: 27,
-    availability: "yes",
-  },
-  {
-    productName: "TV 6",
-    price: 3531,
-    rating: 4.05,
-    discount: 27,
-    availability: "yes",
-  },
-  {
-    productName: "TV 14",
-    price: 1023,
-    rating: 3.85,
-    discount: 73,
-    availability: "yes",
-  },
-  {
-    productName: "TV 9",
-    price: 3906,
-    rating: 2.55,
-    discount: 19,
-    availability: "out-of-stock",
-  },
-  {
-    productName: "TV 3",
-    price: 643,
-    rating: 1.89,
-    discount: 82,
-    availability: "yes",
-  },
-  {
-    productName: "TV 4",
-    price: 3724,
-    rating: 1.48,
-    discount: 29,
-    availability: "yes",
-  },
-  {
-    productName: "TV 11",
-    price: 2901,
-    rating: 0.82,
-    discount: 50,
-    availability: "out-of-stock",
-  },
-  {
-    productName: "TV 5",
-    price: 3346,
-    rating: 0,
-    discount: 26,
-    availability: "yes",
-  },
-];
-
 import image from "@/public/image.jpg";
 
 export default function Home() {
@@ -102,15 +43,21 @@ export default function Home() {
       alert("Erro");
     }
 
-    // const res = await CallAPI(selectedCategory, selectedCompany, minValue, maxValue);
+    const res = await CallAPI(
+      selectedCategory,
+      selectedCompany,
+      minValue,
+      maxValue
+    );
 
-    // console.log(res)
-    setProducts(testObject);
+    if (!res) return alert("An error occured");
+
+    setProducts(res);
   };
 
   return (
     <main className="flex flex-col items-start w-full h-full flex-1 max-w-3xl mx-auto py-4 gap-4 px-2">
-      <h1 className="lg:text-4xl text-2xl font-bold w-full text-center">
+      <h1 className="md:text-4xl text-2xl font-bold w-full text-center">
         Products
       </h1>
 
@@ -191,16 +138,20 @@ export default function Home() {
       >
         Search
       </button>
-      {testObject && (
+      {products && (
         <ul className="flex flex-col w-full gap-2">
-          {testObject.map((product: ProductTypes, i) => (
+          {products.map((product: ProductTypes, i) => (
             <li
               key={i}
-              className="flex flex-row w-full p-2 rounded bg-gray-100 gap-2"
+              className="flex flex-row w-full p-2 rounded border-gray-300 border gap-2"
             >
-              <Image src={image} alt="img" className="w-96 rounded" />
+              <Image src={image} alt="img" className="md:w-96 w-24 rounded" />
               <div className="flex flex-col w-full gap-2">
-                <h2 className="font-medium">{product.productName}</h2>
+                <h2 className="font-medium text-xl">{product.productName}</h2>
+                <p>Price: {product.price}</p>
+                <p>Availability: {product.availability}</p>
+                <p>Discount: {product.discount}</p>
+                <p>Rating: {product.rating} / 5</p>
               </div>
             </li>
           ))}
